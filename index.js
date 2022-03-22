@@ -42,16 +42,30 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-  
+function Person(name, age) {
+  this.name = name;
+  this.age = age
+  this.stomach = [];
 }
 
+Person.prototype.eat = function(someFood){
+  if(this.stomach.length >= 10){
+    return 'I\'m too full'
+  }else{
+    this.stomach.push(someFood)
+  }
+}
 
+Person.prototype.poop = function(){
+  this.stomach.splice(0)
+}
 
-
-
-
-
+Person.prototype.toString = function(){
+  return `${this.name}, ${this.age}`
+}
+const neo = new Person('Neo',20)
+//console.log(neo.name, neo.age, neo.stomach)
+//console.log(neo.toString())
 /*
   TASK 2
     - Write a Car constructor that initializes `model` and `milesPerGallon` from arguments.
@@ -68,10 +82,30 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-  
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon
+  this.tank = 0;
+  this.odometer = 0;
+}
+Car.prototype.fill = function(gallons){
+  this.tank += gallons
+}
+Car.prototype.drive = function(distance){
+  if((this.tank - (distance/this.milesPerGallon)) < 0){
+    console.log(`I ran out of fuel at ${this.tank*this.milesPerGallon} being ${this.odometer += (this.tank*this.milesPerGallon)}`)
+    this.tank = 0
+  }else{
+    this.tank -= (distance/this.milesPerGallon)
+    this.odometer += distance;
+  }
 }
 
+const audi = new Car('Audi', 2)
+//console.log(audi)
+audi.fill(40)
+audi.drive(20)
+//console.log(audi)
 
 /*
   TASK 3
@@ -80,16 +114,30 @@ function Car() {
     - Besides the methods on Person.prototype, babies also have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
- 
+function Baby(name, age, favoriteToy) {
+  Person.call(this,favoriteToy)
+  this.name = name
+  this.age = age
+  this.favoriteToy = favoriteToy
 }
+
+Baby.prototype = Object.create(Person.prototype)
+
+Baby.prototype.play = function(){
+  return `Playing with ${this.favoriteToy}`
+}
+
+
+const jo = new Baby('Eric', 5, 'car')
+console.log(jo)
+
 
 
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
+  1. must be initialized before anything else within objects/classes
+  2. refers to last object
   3. 
   4. 
 */
